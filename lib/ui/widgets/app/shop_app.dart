@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:shop_app/ui/widgets/home/home_widget.dart';
+
 class ShopApp extends StatelessWidget {
   const ShopApp({super.key});
 
@@ -8,7 +10,7 @@ class ShopApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Shop App',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(),
+      home: HomeWidget(),
     );
   }
 }
