@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_app/ui/widgets/home_screen/home_screen_widget.dart';
+import 'package:shop_app/ui/navigation/main_navigation.dart';
 
 class ShopApp extends StatelessWidget {
+  static final mainNavigation = MainNavigation();
+
   const ShopApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Shop App',
       debugShowCheckedModeBanner: false,
-      home: HomeScreenWidget(),
+      routes: mainNavigation.routes,
+      initialRoute: MainNavigationRouteNames.home,
     );
   }
 }
