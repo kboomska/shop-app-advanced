@@ -29,7 +29,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const _AppBarTitle(),
-        backgroundColor: AppColors.appBackground,
         elevation: 0,
       ),
       backgroundColor: AppColors.appBackground,
@@ -55,7 +54,7 @@ class _AppBarTitle extends StatelessWidget {
           width: 24,
           child: Icon(
             Icons.location_on_outlined,
-            color: AppColors.textHeadline,
+            color: AppColors.appBarIcon,
             size: 18,
           ),
         ),
@@ -132,7 +131,7 @@ class _CategoryItemWidget extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onTap: () => model.onCategoryTap(),
+          onTap: () => model.onCategoryTap(context, index),
           child: Stack(
             children: [
               Image.network(category.imageUrl),

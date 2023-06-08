@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:shop_app/domain/api_client/category_api_client.dart';
+import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/Library/localization_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
@@ -35,7 +36,11 @@ class MainScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onCategoryTap() {
-    print('tap');
+  void onCategoryTap(BuildContext context, int index) {
+    final id = _categories[index].id;
+    Navigator.of(context).pushNamed(
+      MainNavigationRouteNames.category,
+      arguments: id,
+    );
   }
 }

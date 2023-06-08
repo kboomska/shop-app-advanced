@@ -32,42 +32,33 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackground,
-      bottomNavigationBar: Theme(
-        data: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedTab,
-          backgroundColor: AppColors.bottomNavigationBarBackground,
-          selectedItemColor: AppColors.bottomNavigationBarSelected,
-          unselectedItemColor: AppColors.bottomNavigationBarUnselected,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          selectedFontSize: 11,
-          unselectedFontSize: 11,
-          iconSize: 20,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home_rounded),
-              label: _bottomNavigationBarOptions[0],
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.search),
-              label: _bottomNavigationBarOptions[1],
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.shopping_basket_outlined),
-              label: _bottomNavigationBarOptions[2],
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.account_circle_outlined),
-              label: _bottomNavigationBarOptions[3],
-            ),
-          ],
-          onTap: onSelectTab,
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTab,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
+        iconSize: 20,
+        elevation: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home_rounded),
+            label: _bottomNavigationBarOptions[0],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.search),
+            label: _bottomNavigationBarOptions[1],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.shopping_basket_outlined),
+            label: _bottomNavigationBarOptions[2],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.account_circle_outlined),
+            label: _bottomNavigationBarOptions[3],
+          ),
+        ],
+        onTap: onSelectTab,
       ),
       body: IndexedStack(
         index: _selectedTab,
