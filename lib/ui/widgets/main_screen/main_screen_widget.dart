@@ -17,6 +17,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final locale = Localizations.localeOf(context);
+    Future.microtask(
+      () => context.read<MainScreenViewModel>().setupLocale(locale),
+    );
     context.read<MainScreenViewModel>().loadCategories();
   }
 
@@ -39,10 +43,14 @@ class _AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    final date = context.select(
+      (MainScreenViewModel model) => model.date,
+    );
+
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
+        const SizedBox(
           height: 24,
           width: 24,
           child: Icon(
@@ -51,11 +59,11 @@ class _AppBarTitle extends StatelessWidget {
             size: 18,
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Санкт-Петербург',
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
@@ -65,10 +73,10 @@ class _AppBarTitle extends StatelessWidget {
                 height: 1.2,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
-              '12 Августа, 2023',
-              style: TextStyle(
+              date,
+              style: const TextStyle(
                 color: AppColors.textSubhead,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
@@ -77,8 +85,8 @@ class _AppBarTitle extends StatelessWidget {
             ),
           ],
         ),
-        Spacer(),
-        CircleAvatar(
+        const Spacer(),
+        const CircleAvatar(
           radius: 22,
           foregroundImage: AssetImage(ShopAppImages.profileAvatar),
         ),
