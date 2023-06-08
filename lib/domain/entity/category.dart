@@ -4,9 +4,9 @@ part 'category.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Category {
-  int id;
-  String name;
-  String imageUrl;
+  final int id;
+  final String name;
+  final String imageUrl;
 
   Category({
     required this.id,

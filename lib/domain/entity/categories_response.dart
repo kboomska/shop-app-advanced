@@ -6,7 +6,7 @@ part 'categories_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CategoriesResponse {
-  List<Category> categories;
+  final List<Category> categories;
 
   CategoriesResponse({
     required this.categories,

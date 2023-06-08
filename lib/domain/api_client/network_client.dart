@@ -12,17 +12,17 @@ class NetworkClient {
   ) async {
     final url = Uri.parse('${Configuration.host}$path');
 
-    try {
-      final request = await _client.getUrl(url);
-      final response = await request.close();
-      final dynamic json = (await response.jsonDecode());
-      final result = parser(json);
-      return result;
-    } on SocketException {
-      throw 'Ошибка соединения. Повторите попытку';
-    } catch (_) {
-      throw 'Произошла неизвестаная ошибка';
-    }
+    // try {
+    final request = await _client.getUrl(url);
+    final response = await request.close();
+    final dynamic json = (await response.jsonDecode());
+    final result = parser(json);
+    return result;
+    // } on SocketException {
+    //   throw 'Ошибка соединения. Повторите попытку';
+    // } catch (_) {
+    //   throw 'Произошла неизвестаная ошибка';
+    // }
   }
 }
 
