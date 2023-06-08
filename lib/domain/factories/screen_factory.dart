@@ -12,7 +12,7 @@ class ScreenFactory {
   }
 
   Widget makeMainScreen() {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (context) => MainScreenViewModel(),
       child: const MainScreenWidget(),
     );

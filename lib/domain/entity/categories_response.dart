@@ -4,7 +4,7 @@ import 'package:shop_app/domain/entity/category.dart';
 
 part 'categories_response.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CategoriesResponse {
   List<Category> categories;
 

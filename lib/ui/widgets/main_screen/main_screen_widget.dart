@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:shop_app/ui/widgets/main_screen/main_screen_view_model.dart';
 import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
-class MainScreenWidget extends StatelessWidget {
+class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({super.key});
+
+  @override
+  State<MainScreenWidget> createState() => _MainScreenWidgetState();
+}
+
+class _MainScreenWidgetState extends State<MainScreenWidget> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<MainScreenViewModel>().loadCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +39,10 @@ class _AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
+        SizedBox(
           height: 24,
           width: 24,
           child: Icon(
@@ -37,10 +51,10 @@ class _AppBarTitle extends StatelessWidget {
             size: 18,
           ),
         ),
-        const SizedBox(width: 4),
+        SizedBox(width: 4),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'Санкт-Петербург',
               style: TextStyle(
@@ -63,8 +77,8 @@ class _AppBarTitle extends StatelessWidget {
             ),
           ],
         ),
-        const Spacer(),
-        const CircleAvatar(
+        Spacer(),
+        CircleAvatar(
           radius: 22,
           foregroundImage: AssetImage(ShopAppImages.profileAvatar),
         ),
@@ -78,25 +92,64 @@ class _CategoryListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoryCount = context.select(
+      (MainScreenViewModel model) => model.categories.length,
+    );
+
     return ListView.separated(
-      itemCount: 4,
+      itemCount: categoryCount,
       separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemBuilder: (context, index) => const _CategoryItemWidget(),
+      itemBuilder: (context, index) => _CategoryItemWidget(index: index),
     );
   }
 }
 
 class _CategoryItemWidget extends StatelessWidget {
-  const _CategoryItemWidget({super.key});
+  final int index;
+
+  const _CategoryItemWidget({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+    final model = context.read<MainScreenViewModel>();
+    final category = model.categories[index];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () => model.onCategoryTap(),
+          child: Stack(
+            children: [
+              Image.network(category.imageUrl),
+              Positioned(
+                top: 12,
+                left: 16,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.loose(
+                    const Size.fromWidth(191),
+                  ),
+                  child: Text(
+                    category.name,
+                    style: const TextStyle(
+                      color: AppColors.textHeadline,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      height: 1.25,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      clipBehavior: Clip.hardEdge,
-      child: Image.asset(ShopAppImages.profileAvatar),
     );
   }
 }
