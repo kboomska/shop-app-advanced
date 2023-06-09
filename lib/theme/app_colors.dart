@@ -12,4 +12,9 @@ abstract class AppColors {
   static const bottomNavigationBarBackground = Color.fromRGBO(255, 255, 255, 1);
 
   static const dishItemBackground = Color.fromRGBO(248, 247, 245, 1);
+
+  static const dishTagBackgroundSelected = Color.fromRGBO(51, 100, 224, 1);
+  static const dishTagBackgroundUnselected = Color.fromRGBO(248, 247, 245, 1);
+  static const dishTagTextSelected = Color.fromRGBO(255, 255, 255, 1);
+  static const dishTagTextUnselected = Color.fromRGBO(0, 0, 0, 1);
 }

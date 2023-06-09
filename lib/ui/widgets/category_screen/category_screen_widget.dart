@@ -26,7 +26,7 @@ class _CategoryScreenWidgetState extends State<CategoryScreenWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<CategoryScreenViewModel>().loadDishes();
+    context.read<CategoryScreenViewModel>().setDishTag();
   }
 
   @override
@@ -40,7 +40,12 @@ class _CategoryScreenWidgetState extends State<CategoryScreenWidget> {
         elevation: 0,
       ),
       backgroundColor: AppColors.appBackground,
-      body: const _DishesGridWidget(),
+      body: const Column(
+        children: [
+          _DishFilter(),
+          _DishesGridWidget(),
+        ],
+      ),
     );
   }
 }
@@ -79,6 +84,59 @@ class _CategoryScreenProfile extends StatelessWidget {
   }
 }
 
+class _DishFilter extends StatelessWidget {
+  const _DishFilter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<CategoryScreenViewModel>();
+    final tags = context.select((CategoryScreenViewModel model) => model.tags);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
+      child: SizedBox(
+        height: 35,
+        child: ListView.separated(
+          itemCount: tags.length,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          separatorBuilder: (context, index) => const SizedBox(width: 8),
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () => model.onTagTap(index),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: tags[index].backgroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  child: Text(
+                    tags[index].name,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: tags[index].titleColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      height: 1.05,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
 class _DishesGridWidget extends StatelessWidget {
   const _DishesGridWidget({super.key});
 
@@ -90,18 +148,20 @@ class _DishesGridWidget extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     final double itemWidth = (size.width / 3) - 16;
 
-    return GridView.builder(
-      itemCount: dishCount,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 14,
-        mainAxisExtent: itemWidth + 40,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemBuilder: (context, index) => _DishItemWidget(
-        index: index,
-        itemWidth: itemWidth,
+    return Expanded(
+      child: GridView.builder(
+        itemCount: dishCount,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 14,
+          mainAxisExtent: itemWidth + 40,
+        ),
+        padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
+        itemBuilder: (context, index) => _DishItemWidget(
+          index: index,
+          itemWidth: itemWidth,
+        ),
       ),
     );
   }

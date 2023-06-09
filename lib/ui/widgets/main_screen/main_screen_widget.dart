@@ -114,9 +114,8 @@ class _CategoryListWidget extends StatelessWidget {
       (MainScreenViewModel model) => model.categories.length,
     );
 
-    return ListView.separated(
+    return ListView.builder(
       itemCount: categoryCount,
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, index) => _CategoryItemWidget(index: index),
     );
   }
@@ -133,7 +132,7 @@ class _CategoryItemWidget extends StatelessWidget {
     final category = model.categories[index];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
