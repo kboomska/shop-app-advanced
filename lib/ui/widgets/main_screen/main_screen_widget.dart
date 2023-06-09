@@ -33,7 +33,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         elevation: 0,
       ),
       backgroundColor: AppColors.appBackground,
-      body: const _CategoryListWidget(),
+      body: const _ErrorMessageWidget(),
     );
   }
 }
@@ -164,6 +164,33 @@ class _CategoryItemWidget extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorMessageWidget extends StatelessWidget {
+  const _ErrorMessageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final errorMessage =
+        context.select((MainScreenViewModel model) => model.errorMessage);
+    if (errorMessage == null) return const _CategoryListWidget();
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Text(
+          errorMessage,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 1.05,
           ),
         ),
       ),

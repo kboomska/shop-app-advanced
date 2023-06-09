@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:shop_app/domain/api_client/api_client_exception.dart';
 
 import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
@@ -15,9 +16,11 @@ class MainScreenViewModel extends ChangeNotifier {
   late DateFormat _dateFormat;
   late DateFormat _yearFormat;
 
+  String? _errorMessage;
   String _date = '';
 
   List<Category> get categories => List.unmodifiable(_categories);
+  String? get errorMessage => _errorMessage;
   String get date => _date;
 
   void setupLocale(Locale locale) {
@@ -32,9 +35,26 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> loadCategories() async {
-    final categoriesResponse = await _categoryApiClient.getCategories();
-    _categories.addAll(categoriesResponse.categories);
+    _errorMessage = await fetchCategories();
     notifyListeners();
+  }
+
+  Future<String?> fetchCategories() async {
+    try {
+      final categoriesResponse = await _categoryApiClient.getCategories();
+      _categories.addAll(categoriesResponse.categories);
+      notifyListeners();
+    } on ApiClientException catch (e) {
+      switch (e.type) {
+        case ApiClientExceptionType.network:
+          return 'Сервер не доступен. Проверьте подключение к сети интернет';
+        case ApiClientExceptionType.other:
+          return 'Произошла ошибка. Попробуйте еще раз';
+      }
+    } catch (_) {
+      return 'Неизвестная ошибка, повторите попытку';
+    }
+    return null;
   }
 
   void onCategoryTap(BuildContext context, int index) {

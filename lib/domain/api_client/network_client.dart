@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:shop_app/domain/api_client/api_client_exception.dart';
 import 'package:shop_app/configuration/configuration.dart';
 
 class NetworkClient {
@@ -12,17 +13,17 @@ class NetworkClient {
   ) async {
     final url = Uri.parse('${Configuration.host}$path');
 
-    // try {
-    final request = await _client.getUrl(url);
-    final response = await request.close();
-    final dynamic json = (await response.jsonDecode());
-    final result = parser(json);
-    return result;
-    // } on SocketException {
-    //   throw 'Ошибка соединения. Повторите попытку';
-    // } catch (_) {
-    //   throw 'Произошла неизвестаная ошибка';
-    // }
+    try {
+      final request = await _client.getUrl(url);
+      final response = await request.close();
+      final dynamic json = (await response.jsonDecode());
+      final result = parser(json);
+      return result;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.network);
+    } catch (_) {
+      throw ApiClientException(ApiClientExceptionType.other);
+    }
   }
 }
 
