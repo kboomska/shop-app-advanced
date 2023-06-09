@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
-
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/api_client_exception.dart';
 import 'package:shop_app/domain/api_client/category_api_client.dart';
+import 'package:shop_app/domain/services/date_time_service.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
-import 'package:shop_app/Library/localization_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryApiClient = CategoryApiClient();
   final _categories = <Category>[];
-  final _localeStorage = LocalizationStorage();
-  late DateFormat _dateFormat;
-  late DateFormat _yearFormat;
+  final _dateTimeService = DateTimeService();
 
   String? _errorMessage;
   String _date = '';
@@ -23,14 +19,8 @@ class MainScreenViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String get date => _date;
 
-  void setupLocale(Locale locale) {
-    if (!_localeStorage.isLocaleUpdated(locale)) return;
-
-    _dateFormat = DateFormat.MMMMd(_localeStorage.localeTag);
-    _yearFormat = DateFormat.y(_localeStorage.localeTag);
-
-    _date =
-        '${_dateFormat.format(DateTime.now())}, ${_yearFormat.format(DateTime.now())}';
+  void getDate(Locale locale) {
+    _date = _dateTimeService.getDate(locale);
     notifyListeners();
   }
 

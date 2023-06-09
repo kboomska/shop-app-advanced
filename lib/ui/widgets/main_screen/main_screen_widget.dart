@@ -19,7 +19,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
     Future.microtask(
-      () => context.read<MainScreenViewModel>().setupLocale(locale),
+      () => context.read<MainScreenViewModel>().getDate(locale),
     );
     context.read<MainScreenViewModel>().loadCategories();
   }
