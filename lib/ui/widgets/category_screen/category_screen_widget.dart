@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
+import 'package:shop_app/ui/widgets/category_screen/category_screen_view_model.dart';
 import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
-import 'package:shop_app/ui/widgets/category_screen/category_screen_view_model.dart';
 
 class CategoryScreenConfiguration {
   final int id;

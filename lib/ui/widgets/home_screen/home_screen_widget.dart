@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:shop_app/domain/factories/screen_factory.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
@@ -12,6 +13,7 @@ class HomeScreenWidget extends StatefulWidget {
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   static final mainNavigation = MainNavigation();
+  static final screenFactory = ScreenFactory();
 
   int _selectedTab = 0;
 
@@ -70,9 +72,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           Center(
             child: Text(_bottomNavigationBarOptions[1]),
           ),
-          Center(
-            child: Text(_bottomNavigationBarOptions[2]),
-          ),
+          screenFactory.makeShoppingCartScreen(),
           Center(
             child: Text(_bottomNavigationBarOptions[3]),
           ),

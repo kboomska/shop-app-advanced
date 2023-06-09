@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:shop_app/domain/api_client/api_client_exception.dart';
 
+import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
+import 'package:shop_app/domain/api_client/api_client_exception.dart';
 import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/Library/localization_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
-import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryApiClient = CategoryApiClient();
