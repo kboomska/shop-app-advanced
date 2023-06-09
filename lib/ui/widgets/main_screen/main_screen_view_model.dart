@@ -6,6 +6,7 @@ import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/Library/localization_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
+import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryApiClient = CategoryApiClient();
@@ -37,10 +38,14 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   void onCategoryTap(BuildContext context, int index) {
-    final id = _categories[index].id;
+    final configuration = CategoryScreenConfiguration(
+      id: _categories[index].id,
+      name: _categories[index].name,
+    );
+
     Navigator.of(context).pushNamed(
       MainNavigationRouteNames.category,
-      arguments: id,
+      arguments: configuration,
     );
   }
 }

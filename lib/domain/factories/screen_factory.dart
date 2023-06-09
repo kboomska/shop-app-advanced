@@ -20,9 +20,9 @@ class ScreenFactory {
     );
   }
 
-  Widget makeCategoryScreen(int categoryId) {
+  Widget makeCategoryScreen(CategoryScreenConfiguration configuration) {
     return ChangeNotifierProvider(
-      create: (context) => CategoryScreenViewModel(categoryId),
+      create: (context) => CategoryScreenViewModel(configuration),
       child: const CategoryScreenWidget(),
     );
   }

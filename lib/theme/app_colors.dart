@@ -10,4 +10,6 @@ abstract class AppColors {
   static const bottomNavigationBarSelected = Color.fromRGBO(51, 100, 224, 1);
   static const bottomNavigationBarUnselected = Color.fromRGBO(165, 169, 178, 1);
   static const bottomNavigationBarBackground = Color.fromRGBO(255, 255, 255, 1);
+
+  static const dishItemBackground = Color.fromRGBO(248, 247, 245, 1);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/factories/screen_factory.dart';
 
 abstract class MainNavigationRouteNames {
@@ -15,12 +16,10 @@ class MainNavigation {
   Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case MainNavigationRouteNames.category:
-        final arguments = settings.arguments;
-        final categoryId = arguments is int ? arguments : 0;
+        final configuration = settings.arguments as CategoryScreenConfiguration;
         return MaterialPageRoute(
-          builder: (_) => _screenFactory.makeCategoryScreen(categoryId),
+          builder: (_) => _screenFactory.makeCategoryScreen(configuration),
         );
-
       default:
         const widget = Text('Navigation error!');
         return MaterialPageRoute(

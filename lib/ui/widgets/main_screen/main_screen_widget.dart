@@ -28,7 +28,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const _AppBarTitle(),
+        title: const _MainScreenTitle(),
+        actions: const [_MainScreenProfile()],
         elevation: 0,
       ),
       backgroundColor: AppColors.appBackground,
@@ -37,8 +38,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   }
 }
 
-class _AppBarTitle extends StatelessWidget {
-  const _AppBarTitle({super.key});
+class _MainScreenTitle extends StatelessWidget {
+  const _MainScreenTitle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +85,22 @@ class _AppBarTitle extends StatelessWidget {
             ),
           ],
         ),
-        const Spacer(),
-        const CircleAvatar(
-          radius: 22,
-          foregroundImage: AssetImage(ShopAppImages.profileAvatar),
-        ),
       ],
+    );
+  }
+}
+
+class _MainScreenProfile extends StatelessWidget {
+  const _MainScreenProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: CircleAvatar(
+        radius: 22,
+        foregroundImage: AssetImage(ShopAppImages.profileAvatar),
+      ),
     );
   }
 }

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/dish_api_client.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 
 class CategoryScreenViewModel extends ChangeNotifier {
   final _dishApiClient = DishApiClient();
   final _dishes = <Dish>[];
-  final int categoryId;
+  final CategoryScreenConfiguration configuration;
 
-  CategoryScreenViewModel(this.categoryId);
+  String get title => configuration.name;
+
+  CategoryScreenViewModel(this.configuration);
 
   List<Dish> get dishes => List.unmodifiable(_dishes);
 
