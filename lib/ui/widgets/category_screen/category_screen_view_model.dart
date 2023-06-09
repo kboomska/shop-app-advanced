@@ -47,9 +47,9 @@ class DishTag {
 }
 
 class CategoryScreenViewModel extends ChangeNotifier {
+  final CategoryScreenConfiguration configuration;
   final _dishApiClient = DishApiClient();
   final _dishes = <Dish>[];
-  final CategoryScreenConfiguration configuration;
 
   final List<DishTag> _tags = <DishTag>[
     DishTag(name: 'Все меню', isSelected: true),
@@ -58,12 +58,11 @@ class CategoryScreenViewModel extends ChangeNotifier {
     DishTag(name: 'С рыбой', isSelected: false),
   ];
 
-  List<DishTag> get tags => List.unmodifiable(_tags);
-  String get title => configuration.name;
-
   CategoryScreenViewModel(this.configuration);
 
   List<Dish> get dishes => List.unmodifiable(_dishes);
+  List<DishTag> get tags => List.unmodifiable(_tags);
+  String get title => configuration.name;
 
   Future<void> setDishTag() async {
     _dishes.clear();
@@ -81,6 +80,14 @@ class CategoryScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onTagTap(int index) {
+    for (int i = 0; i < _tags.length; i++) {
+      _tags[i] = _tags[i].copyWith(isSelected: i == index);
+    }
+    notifyListeners();
+    setDishTag();
+  }
+
   void onDishTap(BuildContext context, int index) {
     final name = _dishes[index].name;
     print('Your choose is: $name');
@@ -88,13 +95,5 @@ class CategoryScreenViewModel extends ChangeNotifier {
     //   MainNavigationRouteNames.category,
     //   arguments: id,
     // );
-  }
-
-  void onTagTap(int index) {
-    for (int i = 0; i < _tags.length; i++) {
-      _tags[i] = _tags[i].copyWith(isSelected: i == index);
-    }
-    notifyListeners();
-    setDishTag();
   }
 }

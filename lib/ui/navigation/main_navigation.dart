@@ -21,9 +21,8 @@ class MainNavigation {
           builder: (_) => _screenFactory.makeCategoryScreen(configuration),
         );
       default:
-        const widget = Text('Navigation error!');
         return MaterialPageRoute(
-          builder: (_) => widget,
+          builder: (_) => _screenFactory.makeMainScreen(),
         );
     }
   }

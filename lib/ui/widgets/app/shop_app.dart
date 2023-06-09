@@ -37,7 +37,6 @@ class ShopApp extends StatelessWidget {
       ],
       routes: mainNavigation.routes,
       initialRoute: MainNavigationRouteNames.home,
-      onGenerateRoute: mainNavigation.onGenerateRoute,
     );
   }
 }
