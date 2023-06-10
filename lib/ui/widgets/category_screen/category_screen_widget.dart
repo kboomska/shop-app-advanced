@@ -41,8 +41,8 @@ class _CategoryScreenWidgetState extends State<CategoryScreenWidget> {
         elevation: 0,
       ),
       backgroundColor: AppColors.appBackground,
-      body: const Column(
-        children: [
+      body: ListView(
+        children: const [
           _DishFilter(),
           _DishesGridWidget(),
         ],
@@ -101,6 +101,7 @@ class _DishFilter extends StatelessWidget {
       child: SizedBox(
         height: 35,
         child: ListView.separated(
+          shrinkWrap: true,
           itemCount: tags.length,
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
@@ -149,20 +150,20 @@ class _DishesGridWidget extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     final double itemWidth = (size.width / 3) - 16;
 
-    return Expanded(
-      child: GridView.builder(
-        itemCount: dishCount,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 14,
-          mainAxisExtent: itemWidth + 40,
-        ),
-        padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
-        itemBuilder: (context, index) => _DishItemWidget(
-          index: index,
-          itemWidth: itemWidth,
-        ),
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: dishCount,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 14,
+        mainAxisExtent: itemWidth + 40,
+      ),
+      padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
+      itemBuilder: (context, index) => _DishItemWidget(
+        index: index,
+        itemWidth: itemWidth,
       ),
     );
   }

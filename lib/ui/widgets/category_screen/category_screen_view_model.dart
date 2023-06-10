@@ -95,5 +95,25 @@ class CategoryScreenViewModel extends ChangeNotifier {
     //   MainNavigationRouteNames.category,
     //   arguments: id,
     // );
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.network(
+                  _dishes[index].imageUrl,
+                  fit: BoxFit.contain,
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
