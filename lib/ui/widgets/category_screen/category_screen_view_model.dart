@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/dish_api_client.dart';
+import 'package:shop_app/domain/factories/screen_factory.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
@@ -48,6 +49,7 @@ class DishTag {
 
 class CategoryScreenViewModel extends ChangeNotifier {
   final CategoryScreenConfiguration configuration;
+  final _screenFactory = ScreenFactory();
   final _dishApiClient = DishApiClient();
   final _dishes = <Dish>[];
 
@@ -89,30 +91,10 @@ class CategoryScreenViewModel extends ChangeNotifier {
   }
 
   void onDishTap(BuildContext context, int index) {
-    final name = _dishes[index].name;
-    print('Your choose is: $name');
-    // Navigator.of(context).pushNamed(
-    //   MainNavigationRouteNames.category,
-    //   arguments: id,
-    // );
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.all(16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.network(
-                  _dishes[index].imageUrl,
-                  fit: BoxFit.contain,
-                )
-              ],
-            ),
-          ),
-        );
+        return _screenFactory.makeProductScreen(_dishes[index]);
       },
     );
   }
