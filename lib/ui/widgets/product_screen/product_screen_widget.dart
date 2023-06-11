@@ -86,6 +86,7 @@ class _ProductImageActionsWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: IconButton(
+                padding: EdgeInsets.zero,
                 onPressed: () {},
                 icon: const Icon(Icons.favorite_border_outlined),
                 // iconSize: 10,
@@ -102,6 +103,7 @@ class _ProductImageActionsWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: IconButton(
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

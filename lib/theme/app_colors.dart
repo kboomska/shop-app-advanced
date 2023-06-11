@@ -23,4 +23,6 @@ abstract class AppColors {
   static const buttonBackground = Color.fromRGBO(51, 100, 224, 1);
   static const buttonPressed = Color.fromRGBO(255, 255, 255, 0.34);
   static const buttonText = Color.fromRGBO(255, 255, 255, 1);
+
+  static const shoppingCartCounterBackground = Color.fromRGBO(239, 238, 236, 1);
 }

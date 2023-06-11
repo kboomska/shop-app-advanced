@@ -32,17 +32,17 @@ class ScreenFactory {
     );
   }
 
-  Widget makeShoppingCartScreen() {
-    return ChangeNotifierProvider(
-      create: (context) => ShoppingCartScreenViewModel(),
-      child: const ShoppingCartScreenWidget(),
-    );
-  }
-
   Widget makeProductScreen(Dish dish) {
     return Provider(
       create: (context) => ProductScreenViewModel(dish),
       child: const ProductScreenWidget(),
+    );
+  }
+
+  Widget makeShoppingCartScreen() {
+    return ChangeNotifierProvider(
+      create: (context) => ShoppingCartScreenViewModel(),
+      child: const ShoppingCartScreenWidget(),
     );
   }
 }

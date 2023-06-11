@@ -25,6 +25,7 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> loadCategories() async {
+    _categories.clear();
     _errorMessage = await fetchCategories();
     notifyListeners();
   }
