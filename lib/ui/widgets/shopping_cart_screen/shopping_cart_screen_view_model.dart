@@ -6,14 +6,16 @@ import 'package:shop_app/domain/services/date_time_service.dart';
 class ShoppingCartScreenViewModel extends ChangeNotifier {
   final _dateTimeService = DateTimeService();
   ShoppingCartDataProvider cartData;
-  Map<int, ShoppingCartItem> _items = <int, ShoppingCartItem>{};
+  List<ShoppingCartItem> _items = <ShoppingCartItem>[];
   String _date = '';
+  int _total = 0;
 
   ShoppingCartScreenViewModel(this.cartData) {
     _setup();
   }
 
-  Map<int, ShoppingCartItem> get items => Map.unmodifiable(_items);
+  List<ShoppingCartItem> get items => List.unmodifiable(_items);
+  String get total => _total == 0 ? '' : ' $_total ₽';
   String get date => _date;
 
   void getDate(Locale locale) {
@@ -22,15 +24,32 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
   }
 
   void _setup() {
+    _updateItems();
     cartData.addListener(_updateItems);
   }
 
   void _updateItems() {
-    _items = cartData.items;
+    _items = cartData.items.values.toList();
+    _totalAmount();
     notifyListeners();
+  }
+
+  void _totalAmount() {
+    int total = 0;
+
+    for (var value in _items) {
+      total += value.price * value.quantity;
+    }
+    _total = total;
   }
 
   void pay() {
     // cartData.items.clear();
+  }
+
+  @override
+  void dispose() {
+    cartData.removeListener(_updateItems);
+    super.dispose();
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ShoppingCartItem {
   final String id;
   final String name;
+  final String imageUrl;
   final int price;
   final int weight;
   final int quantity;
@@ -10,6 +11,7 @@ class ShoppingCartItem {
   ShoppingCartItem({
     required this.id,
     required this.name,
+    required this.imageUrl,
     required this.price,
     required this.weight,
     required this.quantity,
@@ -27,6 +29,7 @@ class ShoppingCartDataProvider extends ChangeNotifier {
   void addShoppingCartItem({
     required productId,
     required name,
+    required imageUrl,
     required price,
     required weight,
   }) {
@@ -36,6 +39,7 @@ class ShoppingCartDataProvider extends ChangeNotifier {
         (existingItem) => ShoppingCartItem(
             id: existingItem.id,
             name: existingItem.name,
+            imageUrl: existingItem.imageUrl,
             price: existingItem.price,
             weight: existingItem.weight,
             quantity: existingItem.quantity + 1),
@@ -46,6 +50,7 @@ class ShoppingCartDataProvider extends ChangeNotifier {
         () => ShoppingCartItem(
           id: DateTime.now().toString(),
           name: name,
+          imageUrl: imageUrl,
           price: price,
           weight: weight,
           quantity: 1,

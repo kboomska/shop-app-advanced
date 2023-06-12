@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:shop_app/ui/widgets/shopping_cart_screen/shopping_cart_screen_view_model.dart';
+import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/theme/app_button_style.dart';
 import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
@@ -129,6 +130,9 @@ class _ShoppingCartPayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<ShoppingCartScreenViewModel>();
+    final total = context.select(
+      (ShoppingCartScreenViewModel model) => model.total,
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -138,9 +142,9 @@ class _ShoppingCartPayButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: model.pay,
         style: AppButtonStyle.blueButton,
-        child: const Text(
-          'Оплатить',
-          style: TextStyle(
+        child: Text(
+          'Оплатить$total',
+          style: const TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 16,
             height: 1.10,
@@ -163,28 +167,33 @@ class _ShoppingCartListWidget extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: itemCount,
-        itemBuilder: (context, index) => const _ShoppingCartItemWidget(),
+        itemBuilder: (context, index) => _ShoppingCartItemWidget(index: index),
       ),
     );
   }
 }
 
 class _ShoppingCartItemWidget extends StatelessWidget {
-  const _ShoppingCartItemWidget({super.key});
+  final int index;
+
+  const _ShoppingCartItemWidget({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(
+    final model = context.read<ShoppingCartScreenViewModel>();
+    final dish = model.items[index];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
       ),
       child: Row(
         children: [
-          _ItemImageWidget(),
-          _ItemDescriptionWidget(),
-          Spacer(),
-          _ItemCounterWidget(),
+          _ItemImageWidget(imageUrl: dish.imageUrl),
+          _ItemDescriptionWidget(dish: dish),
+          const Spacer(),
+          _ItemCounterWidget(index: index),
         ],
       ),
     );
@@ -192,8 +201,11 @@ class _ShoppingCartItemWidget extends StatelessWidget {
 }
 
 class _ItemImageWidget extends StatelessWidget {
+  final String imageUrl;
+
   const _ItemImageWidget({
     super.key,
+    required this.imageUrl,
   });
 
   @override
@@ -206,12 +218,12 @@ class _ItemImageWidget extends StatelessWidget {
           color: AppColors.dishItemBackground,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: const Padding(
-          padding: EdgeInsets.all(6),
-          // child: Image.network(
-          //   dish.imageUrl,
-          //   fit: BoxFit.contain,
-          // ),
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Image.network(
+            imageUrl,
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
@@ -219,7 +231,12 @@ class _ItemImageWidget extends StatelessWidget {
 }
 
 class _ItemDescriptionWidget extends StatelessWidget {
-  const _ItemDescriptionWidget({super.key});
+  final ShoppingCartItem dish;
+
+  const _ItemDescriptionWidget({
+    Key? key,
+    required this.dish,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -228,10 +245,10 @@ class _ItemDescriptionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Зеленый салат',
+          Text(
+            dish.name,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.textHeadline,
               fontWeight: FontWeight.w400,
               fontSize: 14,
@@ -239,11 +256,11 @@ class _ItemDescriptionWidget extends StatelessWidget {
             ),
           ),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: [
                 TextSpan(
-                  text: '390 ₽',
-                  style: TextStyle(
+                  text: '${dish.price} ₽',
+                  style: const TextStyle(
                     color: AppColors.textHeadline,
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -251,8 +268,8 @@ class _ItemDescriptionWidget extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: ' • 420г',
-                  style: TextStyle(
+                  text: ' • ${dish.weight}г',
+                  style: const TextStyle(
                     color: AppColors.textProductWeight,
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -269,10 +286,19 @@ class _ItemDescriptionWidget extends StatelessWidget {
 }
 
 class _ItemCounterWidget extends StatelessWidget {
-  const _ItemCounterWidget({super.key});
+  final int index;
+
+  const _ItemCounterWidget({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final quantity = context.select(
+      (ShoppingCartScreenViewModel model) => model.items[index].quantity,
+    );
+
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxHeight: 32,
@@ -303,9 +329,9 @@ class _ItemCounterWidget extends StatelessWidget {
                   // iconSize: 10,
                 ),
               ),
-              const Text(
-                '1',
-                style: TextStyle(
+              Text(
+                quantity.toString(),
+                style: const TextStyle(
                   color: AppColors.textHeadline,
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
