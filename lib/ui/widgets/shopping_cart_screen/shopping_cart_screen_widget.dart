@@ -295,8 +295,11 @@ class _ItemCounterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final quantity = context.select(
-      (ShoppingCartScreenViewModel model) => model.items[index].quantity,
+    final model = context.read<ShoppingCartScreenViewModel>();
+    final productId = model.items[index].id;
+    final int quantity = context.select(
+      (ShoppingCartScreenViewModel model) =>
+          model.items.length > index ? model.items[index].quantity : 0,
     );
 
     return ConstrainedBox(
@@ -322,9 +325,7 @@ class _ItemCounterWidget extends StatelessWidget {
                 width: 24,
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () {
-                    print('-');
-                  },
+                  onPressed: () => model.onDecreaseQuantity(productId),
                   icon: const Icon(Icons.remove),
                   // iconSize: 10,
                 ),
@@ -343,9 +344,7 @@ class _ItemCounterWidget extends StatelessWidget {
                 width: 24,
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () {
-                    print('+');
-                  },
+                  onPressed: () => model.onIncreaseQuantity(productId),
                   icon: const Icon(Icons.add),
                   // iconSize: 10,
                 ),

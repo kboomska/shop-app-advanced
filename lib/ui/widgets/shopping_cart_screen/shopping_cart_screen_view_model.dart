@@ -34,6 +34,16 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onIncreaseQuantity(int id) {
+    cartData.increaseItemQuantity(id);
+  }
+
+  void onDecreaseQuantity(int id) {
+    final item = _items.firstWhere((element) => element.id == id);
+    if (item.quantity == 1) _items.remove(item);
+    cartData.decreaseItemQuantity(id, item.quantity);
+  }
+
   void _totalAmount() {
     int total = 0;
 

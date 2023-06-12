@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ShoppingCartItem {
-  final String id;
+  final int id;
   final String name;
   final String imageUrl;
   final int price;
@@ -16,6 +16,47 @@ class ShoppingCartItem {
     required this.weight,
     required this.quantity,
   });
+
+  ShoppingCartItem copyWith({
+    int? id,
+    String? name,
+    String? imageUrl,
+    int? price,
+    int? weight,
+    int? quantity,
+  }) {
+    return ShoppingCartItem(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      weight: weight ?? this.weight,
+      quantity: quantity ?? this.quantity,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShoppingCartItem &&
+        other.id == id &&
+        other.name == name &&
+        other.imageUrl == imageUrl &&
+        other.price == price &&
+        other.weight == weight &&
+        other.quantity == quantity;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        imageUrl.hashCode ^
+        price.hashCode ^
+        weight.hashCode ^
+        quantity.hashCode;
+  }
 }
 
 class ShoppingCartDataProvider extends ChangeNotifier {
@@ -27,28 +68,19 @@ class ShoppingCartDataProvider extends ChangeNotifier {
   Map<int, ShoppingCartItem> get items => Map.unmodifiable(_items);
 
   void addShoppingCartItem({
-    required productId,
-    required name,
-    required imageUrl,
-    required price,
-    required weight,
+    required int id,
+    required String name,
+    required String imageUrl,
+    required int price,
+    required int weight,
   }) {
-    if (_items.containsKey(productId)) {
-      _items.update(
-        productId,
-        (existingItem) => ShoppingCartItem(
-            id: existingItem.id,
-            name: existingItem.name,
-            imageUrl: existingItem.imageUrl,
-            price: existingItem.price,
-            weight: existingItem.weight,
-            quantity: existingItem.quantity + 1),
-      );
+    if (_items.containsKey(id)) {
+      increaseItemQuantity(id);
     } else {
       _items.putIfAbsent(
-        productId,
+        id,
         () => ShoppingCartItem(
-          id: DateTime.now().toString(),
+          id: id,
           name: name,
           imageUrl: imageUrl,
           price: price,
@@ -56,6 +88,32 @@ class ShoppingCartDataProvider extends ChangeNotifier {
           quantity: 1,
         ),
       );
+      notifyListeners();
+    }
+  }
+
+  void increaseItemQuantity(int id) {
+    _items.update(
+      id,
+      (existingItem) => existingItem.copyWith(
+        quantity: existingItem.quantity + 1,
+      ),
+    );
+    notifyListeners();
+  }
+
+  void decreaseItemQuantity(int id, int quantity) {
+    if (_items.containsKey(id)) {
+      if (quantity > 1) {
+        _items.update(
+          id,
+          (existingItem) => existingItem.copyWith(
+            quantity: existingItem.quantity - 1,
+          ),
+        );
+      } else {
+        _items.remove(id);
+      }
     }
     notifyListeners();
   }

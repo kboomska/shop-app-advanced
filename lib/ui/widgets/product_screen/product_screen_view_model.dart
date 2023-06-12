@@ -12,7 +12,7 @@ class ProductScreenViewModel {
 
   void addToCart() {
     cartData.addShoppingCartItem(
-      productId: dish.id,
+      id: dish.id,
       name: dish.name,
       imageUrl: dish.imageUrl,
       price: dish.price,
