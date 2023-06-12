@@ -128,13 +128,15 @@ class _ShoppingCartPayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<ShoppingCartScreenViewModel>();
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
       ),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: model.pay,
         style: AppButtonStyle.blueButton,
         child: const Text(
           'Оплатить',
@@ -154,9 +156,13 @@ class _ShoppingCartListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemCount = context.select(
+      (ShoppingCartScreenViewModel model) => model.items.length,
+    );
+
     return Expanded(
       child: ListView.builder(
-        itemCount: 1,
+        itemCount: itemCount,
         itemBuilder: (context, index) => const _ShoppingCartItemWidget(),
       ),
     );

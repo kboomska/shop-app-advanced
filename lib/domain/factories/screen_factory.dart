@@ -7,6 +7,7 @@ import 'package:shop_app/ui/widgets/shopping_cart_screen/shopping_cart_screen_wi
 import 'package:shop_app/ui/widgets/category_screen/category_screen_view_model.dart';
 import 'package:shop_app/ui/widgets/product_screen/product_screen_view_model.dart';
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
+import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/ui/widgets/product_screen/product_screen_widget.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_view_model.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_widget.dart';
@@ -14,6 +15,8 @@ import 'package:shop_app/ui/widgets/home_screen/home_screen_widget.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 
 class ScreenFactory {
+  final cartData = ShoppingCartDataProvider.instance;
+
   Widget makeHomeScreen() {
     return const HomeScreenWidget();
   }
@@ -34,14 +37,14 @@ class ScreenFactory {
 
   Widget makeProductScreen(Dish dish) {
     return Provider(
-      create: (context) => ProductScreenViewModel(dish),
+      create: (context) => ProductScreenViewModel(dish, cartData),
       child: const ProductScreenWidget(),
     );
   }
 
   Widget makeShoppingCartScreen() {
     return ChangeNotifierProvider(
-      create: (context) => ShoppingCartScreenViewModel(),
+      create: (context) => ShoppingCartScreenViewModel(cartData),
       child: const ShoppingCartScreenWidget(),
     );
   }
