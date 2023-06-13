@@ -117,4 +117,9 @@ class ShoppingCartDataProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void resetShoppingCart() {
+    _items.clear();
+    notifyListeners();
+  }
 }

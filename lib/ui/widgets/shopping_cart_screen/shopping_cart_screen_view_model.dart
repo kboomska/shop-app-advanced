@@ -62,7 +62,7 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
   }
 
   void pay() {
-    // cartData.items.clear();
+    cartData.resetShoppingCart();
   }
 
   @override

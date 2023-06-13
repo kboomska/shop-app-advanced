@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 
@@ -10,7 +12,7 @@ class ProductScreenViewModel {
     this.cartData,
   );
 
-  void addToCart() {
+  void addToCart(BuildContext context) {
     cartData.addShoppingCartItem(
       id: dish.id,
       name: dish.name,
@@ -18,5 +20,6 @@ class ProductScreenViewModel {
       price: dish.price,
       weight: dish.weight,
     );
+    Navigator.of(context).pop();
   }
 }

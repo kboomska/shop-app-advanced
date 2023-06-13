@@ -211,7 +211,7 @@ class _ProductAddToCartButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: OutlinedButton(
-        onPressed: model.addToCart,
+        onPressed: () => model.addToCart(context),
         style: AppButtonStyle.blueButton,
         child: const Text(
           'Добавить в корзину',
