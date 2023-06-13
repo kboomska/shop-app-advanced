@@ -114,6 +114,7 @@ class _ShoppingCartBodyWidget extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _ShoppingCartListWidget(),
           _ShoppingCartPayButton(),
@@ -132,6 +133,7 @@ class _ShoppingCartPayButton extends StatelessWidget {
     final total = context.select(
       (ShoppingCartScreenViewModel model) => model.total,
     );
+    if (total.isEmpty) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -142,7 +144,7 @@ class _ShoppingCartPayButton extends StatelessWidget {
         onPressed: model.pay,
         style: AppButtonStyle.blueButton,
         child: Text(
-          'Оплатить$total',
+          total,
           style: const TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 16,
@@ -162,6 +164,19 @@ class _ShoppingCartListWidget extends StatelessWidget {
     final itemCount = context.select(
       (ShoppingCartScreenViewModel model) => model.items.length,
     );
+    if (itemCount == 0) {
+      return const Center(
+        child: Text(
+          'В корзине пока пусто',
+          style: TextStyle(
+            color: AppColors.textProductWeight,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 1.05,
+          ),
+        ),
+      );
+    }
 
     return Expanded(
       child: ListView.builder(

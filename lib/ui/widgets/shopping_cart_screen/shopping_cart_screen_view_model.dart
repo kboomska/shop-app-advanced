@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
 import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
 
@@ -9,17 +11,19 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
   List<ShoppingCartItem> _items = <ShoppingCartItem>[];
   String _date = '';
   int _total = 0;
+  late NumberFormat _formatter;
 
   ShoppingCartScreenViewModel(this.cartData) {
     _setup();
   }
 
   List<ShoppingCartItem> get items => List.unmodifiable(_items);
-  String get total => _total == 0 ? '' : ' $_total ₽';
+  String get total => _total == 0 ? '' : 'Оплатить ${_stringTotal(_total)} ₽';
   String get date => _date;
 
   void getDate(Locale locale) {
     _date = _dateTimeService.getDate(locale);
+    _formatter = NumberFormat.decimalPattern(locale.toLanguageTag());
     notifyListeners();
   }
 
@@ -51,6 +55,10 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
       total += value.price * value.quantity;
     }
     _total = total;
+  }
+
+  String _stringTotal(int total) {
+    return _formatter.format(total);
   }
 
   void pay() {
