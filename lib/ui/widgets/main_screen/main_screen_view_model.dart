@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/domain/services/location_service.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
+import 'package:shop_app/domain/services/location_service_exception.dart';
 import 'package:shop_app/domain/api_client/api_client_exception.dart';
 import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
+import 'package:shop_app/domain/services/location_service.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
@@ -16,7 +17,9 @@ class MainScreenViewModel extends ChangeNotifier {
 
   String? _errorMessage;
   String _date = '';
+  String? _location;
 
+  String get location => _location ?? 'Определение местоположения...';
   List<Category> get categories => List.unmodifiable(_categories);
   String? get errorMessage => _errorMessage;
   String get date => _date;
@@ -27,7 +30,22 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> getAddress() async {
-    await _locationService.getAddress();
+    try {
+      _location = await _locationService.getAddress();
+    } on LocationServiceException catch (e) {
+      switch (e.type) {
+        case LocationServiceExceptionType.permission:
+          _location = 'Геолокация не доступна';
+          break;
+        case LocationServiceExceptionType.services:
+          _location = 'Сервисы геолокации отключены';
+          break;
+        case LocationServiceExceptionType.other:
+          _location = 'Не удалось установить местоположение';
+          break;
+      }
+    }
+    notifyListeners();
   }
 
   Future<void> loadCategories() async {

@@ -1,28 +1,54 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
-class LocationService {
-  late double _latitude;
-  late double _longitude;
+import 'package:shop_app/domain/services/location_service_exception.dart';
 
-  Future<void> _getCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      ).timeout(const Duration(seconds: 15));
-      _latitude = position.latitude;
-      _longitude = position.longitude;
-    } catch (e) {
-      throw 'Ошибка геолокации: $e';
-    }
+class LocationService {
+  // String? _location;
+
+  // String get location => _location ?? '';
+
+  Future<String?> getAddress() async {
+    Position position = await _determinePosition();
+
+    final address =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    return address.first.name;
   }
 
-  Future<void> getAddress() async {
-    await _getCurrentLocation();
-    print(_latitude);
-    print(_longitude);
+  Future<Position> _getCurrentLocation() async {
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      ).timeout(const Duration(seconds: 15));
+    } catch (e) {
+      throw LocationServiceExceptionType.other;
+    }
+    return position;
+  }
 
-    final address = await placemarkFromCoordinates(_latitude, _longitude);
-    print(address.first.name);
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw LocationServiceExceptionType.services;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw LocationServiceExceptionType.permission;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw LocationServiceExceptionType.permission;
+    }
+
+    return await _getCurrentLocation();
   }
 }
