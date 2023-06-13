@@ -9,6 +9,7 @@ abstract class AppColors {
   static const textProductDescription = Color.fromRGBO(0, 0, 0, 0.65);
   static const textProductWeight = Color.fromRGBO(0, 0, 0, 0.4);
 
+  static const bottomNavigationBarBorder = Color.fromRGBO(232, 233, 236, 1);
   static const bottomNavigationBarSelected = Color.fromRGBO(51, 100, 224, 1);
   static const bottomNavigationBarUnselected = Color.fromRGBO(165, 169, 178, 1);
   static const bottomNavigationBarBackground = Color.fromRGBO(255, 255, 255, 1);

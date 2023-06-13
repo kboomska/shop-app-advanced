@@ -36,33 +36,10 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackground,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedTab,
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        selectedFontSize: 11,
-        unselectedFontSize: 11,
-        iconSize: 24,
-        elevation: 0,
-        items: [
-          makeItem(
-            assetImage: ShopAppIcons.home,
-            label: _bottomNavigationBarOptions[0],
-          ),
-          makeItem(
-            assetImage: ShopAppIcons.search,
-            label: _bottomNavigationBarOptions[1],
-          ),
-          makeItem(
-            assetImage: ShopAppIcons.cart,
-            label: _bottomNavigationBarOptions[2],
-          ),
-          makeItem(
-            assetImage: ShopAppIcons.profile,
-            label: _bottomNavigationBarOptions[3],
-          ),
-        ],
-        onTap: onSelectTab,
+      bottomNavigationBar: BottomNavigationBarHandler(
+        index: _selectedTab,
+        labelList: _bottomNavigationBarOptions,
+        onSelectTab: onSelectTab,
       ),
       body: IndexedStack(
         index: _selectedTab,
@@ -78,6 +55,61 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             child: Text(_bottomNavigationBarOptions[3]),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BottomNavigationBarHandler extends StatelessWidget {
+  final int index;
+  final List<String> labelList;
+  final Function(int) onSelectTab;
+
+  const BottomNavigationBarHandler({
+    super.key,
+    required this.index,
+    required this.labelList,
+    required this.onSelectTab,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: AppColors.bottomNavigationBarBorder,
+            width: 1,
+          ),
+        ),
+      ),
+      child: BottomNavigationBar(
+        currentIndex: index,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
+        iconSize: 24,
+        elevation: 0,
+        items: [
+          makeItem(
+            assetImage: ShopAppIcons.home,
+            label: labelList[0],
+          ),
+          makeItem(
+            assetImage: ShopAppIcons.search,
+            label: labelList[1],
+          ),
+          makeItem(
+            assetImage: ShopAppIcons.cart,
+            label: labelList[2],
+          ),
+          makeItem(
+            assetImage: ShopAppIcons.profile,
+            label: labelList[3],
+          ),
+        ],
+        onTap: onSelectTab,
       ),
     );
   }
