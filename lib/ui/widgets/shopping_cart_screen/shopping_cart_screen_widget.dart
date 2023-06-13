@@ -52,13 +52,12 @@ class _ShoppingCartScreenTitle extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
+        SizedBox(
           height: 24,
           width: 24,
-          child: Icon(
-            Icons.location_on_outlined,
+          child: Image.asset(
+            ShopAppIcons.location,
             color: AppColors.appBarIcon,
-            size: 18,
           ),
         ),
         const SizedBox(width: 4),
@@ -326,8 +325,10 @@ class _ItemCounterWidget extends StatelessWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => model.onDecreaseQuantity(productId),
-                  icon: const Icon(Icons.remove),
-                  // iconSize: 10,
+                  icon: Image.asset(
+                    ShopAppIcons.remove,
+                    color: AppColors.appBarIcon,
+                  ),
                 ),
               ),
               Text(
@@ -345,8 +346,10 @@ class _ItemCounterWidget extends StatelessWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => model.onIncreaseQuantity(productId),
-                  icon: const Icon(Icons.add),
-                  // iconSize: 10,
+                  icon: Image.asset(
+                    ShopAppIcons.add,
+                    color: AppColors.appBarIcon,
+                  ),
                 ),
               ),
             ],

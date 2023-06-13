@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:shop_app/ui/widgets/product_screen/product_screen_view_model.dart';
 import 'package:shop_app/theme/app_button_style.dart';
+import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
 class ProductScreenWidget extends StatelessWidget {
@@ -88,8 +89,14 @@ class _ProductImageActionsWidget extends StatelessWidget {
               child: IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () {},
-                icon: const Icon(Icons.favorite_border_outlined),
-                // iconSize: 10,
+                icon: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Image.asset(
+                    ShopAppIcons.favorite,
+                    color: AppColors.appBarIcon,
+                  ),
+                ),
               ),
             ),
           ),
@@ -107,8 +114,14 @@ class _ProductImageActionsWidget extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: const Icon(Icons.close),
-                // iconSize: 10,
+                icon: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Image.asset(
+                    ShopAppIcons.dismiss,
+                    color: AppColors.appBarIcon,
+                  ),
+                ),
               ),
             ),
           ),

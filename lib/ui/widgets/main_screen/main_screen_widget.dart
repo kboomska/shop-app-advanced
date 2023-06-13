@@ -50,13 +50,12 @@ class _MainScreenTitle extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
+        SizedBox(
           height: 24,
           width: 24,
-          child: Icon(
-            Icons.location_on_outlined,
+          child: Image.asset(
+            ShopAppIcons.location,
             color: AppColors.appBarIcon,
-            size: 18,
           ),
         ),
         const SizedBox(width: 4),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shop_app/domain/factories/screen_factory.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
+import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
 class HomeScreenWidget extends StatefulWidget {
@@ -41,23 +42,23 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         showUnselectedLabels: true,
         selectedFontSize: 11,
         unselectedFontSize: 11,
-        iconSize: 20,
+        iconSize: 24,
         elevation: 0,
         items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home_rounded),
+          makeItem(
+            assetImage: ShopAppIcons.home,
             label: _bottomNavigationBarOptions[0],
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.search),
+          makeItem(
+            assetImage: ShopAppIcons.search,
             label: _bottomNavigationBarOptions[1],
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_basket_outlined),
+          makeItem(
+            assetImage: ShopAppIcons.cart,
             label: _bottomNavigationBarOptions[2],
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.account_circle_outlined),
+          makeItem(
+            assetImage: ShopAppIcons.profile,
             label: _bottomNavigationBarOptions[3],
           ),
         ],
@@ -80,4 +81,29 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       ),
     );
   }
+}
+
+BottomNavigationBarItem makeItem({
+  required String assetImage,
+  required String label,
+}) {
+  return BottomNavigationBarItem(
+    icon: SizedBox(
+      height: 24,
+      width: 24,
+      child: Image.asset(
+        assetImage,
+        color: AppColors.bottomNavigationBarUnselected,
+      ),
+    ),
+    activeIcon: SizedBox(
+      height: 24,
+      width: 24,
+      child: Image.asset(
+        assetImage,
+        color: AppColors.bottomNavigationBarSelected,
+      ),
+    ),
+    label: label,
+  );
 }

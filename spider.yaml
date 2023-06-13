@@ -30,6 +30,9 @@ use_references_list: false
 package: resources
 
 groups:
-  - path: images
+  - path: assets/images
     class_name: ShopAppImages
+    types: [ .png, .jpg, .jpeg, .webp, .webm, .bmp ]
+  - path: assets/icons
+    class_name: ShopAppIcons
     types: [ .png, .jpg, .jpeg, .webp, .webm, .bmp ]
