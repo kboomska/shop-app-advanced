@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/domain/services/location_service.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/api_client_exception.dart';
@@ -9,6 +10,7 @@ import 'package:shop_app/domain/entity/category.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryApiClient = CategoryApiClient();
+  final _locationService = LocationService();
   final _categories = <Category>[];
   final _dateTimeService = DateTimeService();
 
@@ -24,9 +26,14 @@ class MainScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getAddress() async {
+    await _locationService.getAddress();
+  }
+
   Future<void> loadCategories() async {
     _categories.clear();
     _errorMessage = await fetchCategories();
+    getAddress();
     notifyListeners();
   }
 
