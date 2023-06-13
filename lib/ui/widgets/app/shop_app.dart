@@ -16,6 +16,7 @@ class ShopApp extends StatelessWidget {
       title: 'Shop App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'SFProDisplay',
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
