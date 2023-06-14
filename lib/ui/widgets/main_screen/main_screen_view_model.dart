@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
-import 'package:shop_app/domain/services/location_service_exception.dart';
 import 'package:shop_app/domain/api_client/api_client_exception.dart';
 import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
-import 'package:shop_app/domain/services/location_service.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
+import 'package:shop_app/Library/location_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryApiClient = CategoryApiClient();
-  final _locationService = LocationService();
+  LocationStorage locationStorage;
   final _categories = <Category>[];
   final _dateTimeService = DateTimeService();
 
   String? _errorMessage;
   String _date = '';
   String? _location;
+
+  MainScreenViewModel(this.locationStorage);
 
   String get location => _location ?? 'Определение местоположения...';
   List<Category> get categories => List.unmodifiable(_categories);
@@ -31,25 +32,36 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> _getAddress(Locale locale) async {
-    try {
-      _location = await _locationService.getAddress(locale);
-    } on LocationServiceException catch (e) {
-      switch (e.type) {
-        case LocationServiceExceptionType.permission:
-          _location = 'Геолокация не доступна';
-          break;
-        case LocationServiceExceptionType.services:
-          _location = 'Сервисы геолокации отключены';
-          break;
-        case LocationServiceExceptionType.other:
-          _location = 'Не удалось установить местоположение';
-          break;
-      }
-    } catch (_) {
-      _location = 'Неизвестная ошибка, повторите попытку';
+    if (locationStorage.location.isEmpty) {
+      await locationStorage.getAddress(locale);
     }
+    _location = locationStorage.location;
     notifyListeners();
   }
+
+  // Future<void> _getAddress(Locale locale) async {
+  //   try {
+  //     if (_locationService.location.isEmpty) {
+  //       await _locationService.getAddress(locale);
+  //     }
+  //     _location = _locationService.location;
+  //   } on LocationServiceException catch (e) {
+  //     switch (e.type) {
+  //       case LocationServiceExceptionType.permission:
+  //         _location = 'Геолокация не доступна';
+  //         break;
+  //       case LocationServiceExceptionType.services:
+  //         _location = 'Сервисы геолокации отключены';
+  //         break;
+  //       case LocationServiceExceptionType.other:
+  //         _location = 'Не удалось установить местоположение';
+  //         break;
+  //     }
+  //   } catch (_) {
+  //     _location = 'Неизвестная ошибка, повторите попытку';
+  //   }
+  //   notifyListeners();
+  // }
 
   Future<void> loadCategories() async {
     _categories.clear();

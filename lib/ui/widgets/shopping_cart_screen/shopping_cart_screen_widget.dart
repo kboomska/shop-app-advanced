@@ -22,7 +22,7 @@ class _ShoppingCartScreenWidgetState extends State<ShoppingCartScreenWidget> {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
     Future.microtask(
-      () => context.read<ShoppingCartScreenViewModel>().getDate(locale),
+      () => context.read<ShoppingCartScreenViewModel>().setup(locale),
     );
   }
 

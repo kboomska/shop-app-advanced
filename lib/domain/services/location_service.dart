@@ -6,10 +6,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:shop_app/domain/services/location_service_exception.dart';
 
 class LocationService {
-  // String? _location;
-
-  // String get location => _location ?? '';
-
   Future<String?> getAddress(Locale locale) async {
     Position position = await _determinePosition();
 
@@ -18,6 +14,7 @@ class LocationService {
       position.longitude,
       localeIdentifier: locale.toLanguageTag(),
     );
+    print(address.first.locality);
     return address.first.locality;
   }
 
