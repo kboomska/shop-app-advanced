@@ -19,7 +19,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
     Future.microtask(
-      () => context.read<MainScreenViewModel>().getDate(locale),
+      () => context.read<MainScreenViewModel>().setup(locale),
     );
     context.read<MainScreenViewModel>().loadCategories();
   }
@@ -66,14 +66,19 @@ class _MainScreenTitle extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                location,
-                style: const TextStyle(
-                  overflow: TextOverflow.ellipsis,
-                  color: AppColors.textHeadline,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  height: 1.2,
+              SizedBox(
+                height: 22,
+                child: FittedBox(
+                  child: Text(
+                    location,
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: AppColors.textHeadline,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 4),

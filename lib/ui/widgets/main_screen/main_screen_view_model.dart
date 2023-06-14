@@ -24,14 +24,15 @@ class MainScreenViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String get date => _date;
 
-  void getDate(Locale locale) {
+  void setup(Locale locale) {
     _date = _dateTimeService.getDate(locale);
+    _getAddress(locale);
     notifyListeners();
   }
 
-  Future<void> getAddress() async {
+  Future<void> _getAddress(Locale locale) async {
     try {
-      _location = await _locationService.getAddress();
+      _location = await _locationService.getAddress(locale);
     } on LocationServiceException catch (e) {
       switch (e.type) {
         case LocationServiceExceptionType.permission:
@@ -44,6 +45,8 @@ class MainScreenViewModel extends ChangeNotifier {
           _location = 'Не удалось установить местоположение';
           break;
       }
+    } catch (_) {
+      _location = 'Неизвестная ошибка, повторите попытку';
     }
     notifyListeners();
   }
@@ -51,7 +54,6 @@ class MainScreenViewModel extends ChangeNotifier {
   Future<void> loadCategories() async {
     _categories.clear();
     _errorMessage = await fetchCategories();
-    getAddress();
     notifyListeners();
   }
 

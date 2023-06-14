@@ -64,14 +64,19 @@ class _ShoppingCartScreenTitle extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Санкт-Петербург',
-              style: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: AppColors.textHeadline,
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
-                height: 1.2,
+            const SizedBox(
+              height: 22,
+              child: FittedBox(
+                child: Text(
+                  'Санкт-Петербург',
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    color: AppColors.textHeadline,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    height: 1.2,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 4),

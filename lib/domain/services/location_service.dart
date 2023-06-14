@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -8,12 +10,15 @@ class LocationService {
 
   // String get location => _location ?? '';
 
-  Future<String?> getAddress() async {
+  Future<String?> getAddress(Locale locale) async {
     Position position = await _determinePosition();
 
-    final address =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    return address.first.name;
+    final address = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+      localeIdentifier: locale.toLanguageTag(),
+    );
+    return address.first.locality;
   }
 
   Future<Position> _getCurrentLocation() async {
