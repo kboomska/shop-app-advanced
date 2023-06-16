@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shop_app/domain/api_client/api_client_exception.dart';
-import 'package:shop_app/configuration/configuration.dart';
 
 class NetworkClient {
   final _client = HttpClient();
 
   Future<T> get<T>(
+    String host,
     String path,
     T Function(dynamic json) parser,
   ) async {
-    final url = Uri.parse('${Configuration.host}$path');
+    final url = Uri.parse('$host$path');
 
     try {
       final request = await _client.getUrl(url);

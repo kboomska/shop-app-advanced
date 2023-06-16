@@ -1,5 +1,6 @@
 import 'package:shop_app/domain/entity/categories_response.dart';
 import 'package:shop_app/domain/api_client/network_client.dart';
+import 'package:shop_app/configuration/configuration.dart';
 
 class CategoryApiClient {
   final _networkClient = NetworkClient();
@@ -12,6 +13,7 @@ class CategoryApiClient {
     }
 
     final result = _networkClient.get(
+      Configuration.host,
       '/058729bd-1402-4578-88de-265481fd7d54',
       parser,
     );
