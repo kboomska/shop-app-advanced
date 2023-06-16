@@ -48,6 +48,9 @@ class _ShoppingCartScreenTitle extends StatelessWidget {
     final date = context.select(
       (ShoppingCartScreenViewModel model) => model.date,
     );
+    final location = context.select(
+      (ShoppingCartScreenViewModel model) => model.location,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,12 +67,12 @@ class _ShoppingCartScreenTitle extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+            SizedBox(
               height: 22,
               child: FittedBox(
                 child: Text(
-                  'Санкт-Петербург',
-                  style: TextStyle(
+                  location,
+                  style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
                     color: AppColors.textHeadline,
                     fontWeight: FontWeight.w500,
