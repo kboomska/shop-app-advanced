@@ -4,30 +4,46 @@ import 'package:intl/intl.dart';
 
 import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
+import 'package:shop_app/Library/location_storage.dart';
 
 class ShoppingCartScreenViewModel extends ChangeNotifier {
   final _dateTimeService = DateTimeService();
+  LocationStorage locationStorage;
   ShoppingCartDataProvider cartData;
   List<ShoppingCartItem> _items = <ShoppingCartItem>[];
   String _date = '';
   int _total = 0;
   late NumberFormat _formatter;
+  String? _location;
 
-  ShoppingCartScreenViewModel(this.cartData) {
-    _setup();
+  ShoppingCartScreenViewModel(
+    this.cartData,
+    this.locationStorage,
+  ) {
+    _setupData();
   }
 
+  String get location => _location ?? 'Определение местоположения...';
   List<ShoppingCartItem> get items => List.unmodifiable(_items);
   String get total => _total == 0 ? '' : 'Оплатить ${_stringTotal(_total)} ₽';
   String get date => _date;
 
-  void getDate(Locale locale) {
+  void setup(Locale locale) {
     _date = _dateTimeService.getDate(locale);
     _formatter = NumberFormat.decimalPattern(locale.toLanguageTag());
+    _getAddress(locale);
     notifyListeners();
   }
 
-  void _setup() {
+  Future<void> _getAddress(Locale locale) async {
+    if (locationStorage.location.isEmpty) {
+      await locationStorage.getAddress(locale);
+    }
+    _location = locationStorage.location;
+    notifyListeners();
+  }
+
+  void _setupData() {
     _updateItems();
     cartData.addListener(_updateItems);
   }

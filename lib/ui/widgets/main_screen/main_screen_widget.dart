@@ -19,7 +19,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
     Future.microtask(
-      () => context.read<MainScreenViewModel>().getDate(locale),
+      () => context.read<MainScreenViewModel>().setup(locale),
     );
     context.read<MainScreenViewModel>().loadCategories();
   }
@@ -46,6 +46,9 @@ class _MainScreenTitle extends StatelessWidget {
     final date = context.select(
       (MainScreenViewModel model) => model.date,
     );
+    final location = context.select(
+      (MainScreenViewModel model) => model.location,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,30 +62,37 @@ class _MainScreenTitle extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Санкт-Петербург',
-              style: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: AppColors.textHeadline,
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
-                height: 1.2,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 22,
+                child: FittedBox(
+                  child: Text(
+                    location,
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: AppColors.textHeadline,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              date,
-              style: const TextStyle(
-                color: AppColors.textSubhead,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                height: 1.15,
+              const SizedBox(height: 4),
+              Text(
+                date,
+                style: const TextStyle(
+                  color: AppColors.textSubhead,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  height: 1.15,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

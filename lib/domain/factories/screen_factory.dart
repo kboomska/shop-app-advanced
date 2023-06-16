@@ -12,10 +12,12 @@ import 'package:shop_app/ui/widgets/product_screen/product_screen_widget.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_view_model.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_widget.dart';
 import 'package:shop_app/ui/widgets/home_screen/home_screen_widget.dart';
+import 'package:shop_app/Library/location_storage.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 
 class ScreenFactory {
   final cartData = ShoppingCartDataProvider.instance;
+  final locationStorage = LocationStorage.instance;
 
   Widget makeHomeScreen() {
     return const HomeScreenWidget();
@@ -23,7 +25,7 @@ class ScreenFactory {
 
   Widget makeMainScreen() {
     return ChangeNotifierProvider(
-      create: (context) => MainScreenViewModel(),
+      create: (context) => MainScreenViewModel(locationStorage),
       child: const MainScreenWidget(),
     );
   }
@@ -44,7 +46,10 @@ class ScreenFactory {
 
   Widget makeShoppingCartScreen() {
     return ChangeNotifierProvider(
-      create: (context) => ShoppingCartScreenViewModel(cartData),
+      create: (context) => ShoppingCartScreenViewModel(
+        cartData,
+        locationStorage,
+      ),
       child: const ShoppingCartScreenWidget(),
     );
   }
