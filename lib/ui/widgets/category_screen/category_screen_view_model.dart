@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
-import 'package:shop_app/domain/api_client/dish_api_client.dart';
 import 'package:shop_app/domain/factories/screen_factory.dart';
+import 'package:shop_app/domain/services/dish_service.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
@@ -50,7 +50,7 @@ class DishTag {
 class CategoryScreenViewModel extends ChangeNotifier {
   final CategoryScreenConfiguration configuration;
   final _screenFactory = ScreenFactory();
-  final _dishApiClient = DishApiClient();
+  final _dishService = DishService();
   final _dishes = <Dish>[];
 
   final List<DishTag> _tags = <DishTag>[
@@ -73,7 +73,7 @@ class CategoryScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> _loadDishes(String dishTag) async {
-    final dishesResponse = await _dishApiClient.getDishes();
+    final dishesResponse = await _dishService.categoryScreenDishes();
     final filteredDishes = dishesResponse.dishes.where(
       (dish) => dish.tegs.contains(dishTag),
     );

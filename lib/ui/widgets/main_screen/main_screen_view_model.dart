@@ -41,11 +41,11 @@ class MainScreenViewModel extends ChangeNotifier {
 
   Future<void> loadCategories() async {
     _categories.clear();
-    _errorMessage = await fetchCategories();
+    _errorMessage = await _fetchCategories();
     notifyListeners();
   }
 
-  Future<String?> fetchCategories() async {
+  Future<String?> _fetchCategories() async {
     try {
       final categoriesResponse = await _categoryService.mainScreenCategories();
       _categories.addAll(categoriesResponse.categories);
