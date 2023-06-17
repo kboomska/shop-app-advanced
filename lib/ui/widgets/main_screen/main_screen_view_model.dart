@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/network_api_client_exception.dart';
+import 'package:shop_app/ui/navigation/main_navigation_route_names.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
 import 'package:shop_app/domain/services/category_service.dart';
 import 'package:shop_app/domain/services/location_service.dart';
-import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
 class MainScreenViewModel extends ChangeNotifier {

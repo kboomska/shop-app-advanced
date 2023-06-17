@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:shop_app/ui/navigation/main_navigation.dart';
+import 'package:shop_app/ui/navigation/main_navigation_route_names.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
-class ShopApp extends StatelessWidget {
-  static final mainNavigation = MainNavigation();
+abstract class ShopAppNavigation {
+  Route<Object> onGenerateRoute(RouteSettings settings);
+  Map<String, Widget Function(BuildContext)> get routes;
+}
 
-  const ShopApp({super.key});
+class ShopApp extends StatelessWidget {
+  final ShopAppNavigation navigation;
+
+  const ShopApp({super.key, required this.navigation});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class ShopApp extends StatelessWidget {
       supportedLocales: const [
         Locale('ru', 'RU'),
       ],
-      routes: mainNavigation.routes,
+      routes: navigation.routes,
       initialRoute: MainNavigationRouteNames.home,
     );
   }
