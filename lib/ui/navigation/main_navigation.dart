@@ -6,11 +6,12 @@ import 'package:shop_app/ui/widgets/app/shop_app.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 
 abstract class ScreenFactory {
-  Widget makeHomeScreen();
-  Widget makeMainScreen();
   Widget makeCategoryScreen(CategoryScreenConfiguration configuration);
+  Widget makeMainScreenGenerateRoute();
   Widget makeProductScreen(Dish dish);
   Widget makeShoppingCartScreen();
+  Widget makeHomeScreen();
+  Widget makeMainScreen();
 }
 
 class MainNavigation implements ShopAppNavigation {

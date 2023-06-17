@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_app/domain/factories/screen_factory.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
 import 'package:shop_app/resources/resources.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
 class HomeScreenWidget extends StatefulWidget {
-  const HomeScreenWidget({super.key});
+  final ScreenFactory screenFactory;
+
+  const HomeScreenWidget({super.key, required this.screenFactory});
 
   @override
   State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  static final mainNavigation = MainNavigation();
-  static final screenFactory = ScreenFactory();
-
   int _selectedTab = 0;
 
   static const List<String> _bottomNavigationBarOptions = [
@@ -44,13 +42,11 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       body: IndexedStack(
         index: _selectedTab,
         children: [
-          Navigator(
-            onGenerateRoute: mainNavigation.onGenerateRoute,
-          ),
+          widget.screenFactory.makeMainScreenGenerateRoute(),
           Center(
             child: Text(_bottomNavigationBarOptions[1]),
           ),
-          screenFactory.makeShoppingCartScreen(),
+          widget.screenFactory.makeShoppingCartScreen(),
           Center(
             child: Text(_bottomNavigationBarOptions[3]),
           ),

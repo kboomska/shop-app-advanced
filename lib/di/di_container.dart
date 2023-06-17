@@ -50,7 +50,14 @@ class _ScreenFactoryDefault implements ScreenFactory {
 
   @override
   Widget makeHomeScreen() {
-    return const HomeScreenWidget();
+    return HomeScreenWidget(screenFactory: this);
+  }
+
+  @override
+  Widget makeMainScreenGenerateRoute() {
+    return Navigator(
+      onGenerateRoute: diContainer._makeShopAppNavigation().onGenerateRoute,
+    );
   }
 
   @override
