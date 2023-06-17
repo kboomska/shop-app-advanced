@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_app/ui/widgets/app/shop_app.dart';
+import 'package:shop_app/di/di_container.dart';
+
+abstract class AppFactory {
+  Widget makeShopApp();
+}
+
+final shopAppFactory = makeShopAppFactory();
 
 void main() {
-  const app = ShopApp();
+  final app = shopAppFactory.makeShopApp();
   runApp(app);
 }
