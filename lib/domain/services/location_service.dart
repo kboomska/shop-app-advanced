@@ -4,11 +4,10 @@ import 'package:shop_app/domain/api_client/location_api_client_exception.dart';
 import 'package:shop_app/domain/api_client/location_api_client.dart';
 
 class LocationService {
-  static final instance = LocationService._();
   final _locationService = LocationApiClient();
   String? _location;
 
-  LocationService._();
+  LocationService();
 
   String get location => _location ?? '';
 

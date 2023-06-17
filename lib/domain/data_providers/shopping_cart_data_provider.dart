@@ -60,10 +60,9 @@ class ShoppingCartItem {
 }
 
 class ShoppingCartDataProvider extends ChangeNotifier {
-  static final instance = ShoppingCartDataProvider._();
   final _items = <int, ShoppingCartItem>{};
 
-  ShoppingCartDataProvider._();
+  ShoppingCartDataProvider();
 
   Map<int, ShoppingCartItem> get items => Map.unmodifiable(_items);
 
