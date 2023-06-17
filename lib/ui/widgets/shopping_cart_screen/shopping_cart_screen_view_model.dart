@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 
 import 'package:shop_app/domain/data_providers/shopping_cart_data_provider.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
-import 'package:shop_app/Library/location_storage.dart';
+import 'package:shop_app/domain/services/location_service.dart';
 
 class ShoppingCartScreenViewModel extends ChangeNotifier {
   final _dateTimeService = DateTimeService();
-  LocationStorage locationStorage;
+  LocationService locationService;
   ShoppingCartDataProvider cartData;
   List<ShoppingCartItem> _items = <ShoppingCartItem>[];
   String _date = '';
@@ -18,7 +18,7 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
 
   ShoppingCartScreenViewModel(
     this.cartData,
-    this.locationStorage,
+    this.locationService,
   ) {
     _setupData();
   }
@@ -36,10 +36,10 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> _getAddress(Locale locale) async {
-    if (locationStorage.location.isEmpty) {
-      await locationStorage.getAddress(locale);
+    if (locationService.location.isEmpty) {
+      await locationService.getAddress(locale);
     }
-    _location = locationStorage.location;
+    _location = locationService.location;
     notifyListeners();
   }
 

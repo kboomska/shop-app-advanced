@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:shop_app/domain/api_client/api_client_exception.dart';
+import 'package:shop_app/domain/api_client/network_api_client_exception.dart';
 
 class NetworkClient {
   final _client = HttpClient();
@@ -20,9 +20,9 @@ class NetworkClient {
       final result = parser(json);
       return result;
     } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.network);
+      throw NetworkApiClientException(NetworkApiClientExceptionType.network);
     } catch (_) {
-      throw ApiClientException(ApiClientExceptionType.other);
+      throw NetworkApiClientException(NetworkApiClientExceptionType.other);
     }
   }
 }

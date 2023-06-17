@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
-import 'package:shop_app/domain/api_client/api_client_exception.dart';
+import 'package:shop_app/domain/api_client/network_api_client_exception.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
 import 'package:shop_app/domain/services/category_service.dart';
+import 'package:shop_app/domain/services/location_service.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
-import 'package:shop_app/Library/location_storage.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
 class MainScreenViewModel extends ChangeNotifier {
   final _categoryService = CategoryService();
-  LocationStorage locationStorage;
+  LocationService locationService;
   final _categories = <Category>[];
   final _dateTimeService = DateTimeService();
 
@@ -18,7 +18,7 @@ class MainScreenViewModel extends ChangeNotifier {
   String _date = '';
   String? _location;
 
-  MainScreenViewModel(this.locationStorage);
+  MainScreenViewModel(this.locationService);
 
   String get location => _location ?? 'Определение местоположения...';
   List<Category> get categories => List.unmodifiable(_categories);
@@ -32,10 +32,10 @@ class MainScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> _getAddress(Locale locale) async {
-    if (locationStorage.location.isEmpty) {
-      await locationStorage.getAddress(locale);
+    if (locationService.location.isEmpty) {
+      await locationService.getAddress(locale);
     }
-    _location = locationStorage.location;
+    _location = locationService.location;
     notifyListeners();
   }
 
@@ -50,11 +50,11 @@ class MainScreenViewModel extends ChangeNotifier {
       final categoriesResponse = await _categoryService.mainScreenCategories();
       _categories.addAll(categoriesResponse.categories);
       notifyListeners();
-    } on ApiClientException catch (e) {
+    } on NetworkApiClientException catch (e) {
       switch (e.type) {
-        case ApiClientExceptionType.network:
+        case NetworkApiClientExceptionType.network:
           return 'Сервер не доступен. Проверьте подключение к сети интернет';
-        case ApiClientExceptionType.other:
+        case NetworkApiClientExceptionType.other:
           return 'Произошла ошибка. Попробуйте еще раз';
       }
     } catch (_) {
