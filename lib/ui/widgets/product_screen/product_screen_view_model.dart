@@ -7,10 +7,10 @@ class ProductScreenViewModel {
   ShoppingCartDataProvider cartData;
   final Dish dish;
 
-  ProductScreenViewModel(
-    this.dish,
-    this.cartData,
-  );
+  ProductScreenViewModel({
+    required this.dish,
+    required this.cartData,
+  });
 
   void addToCart(BuildContext context) {
     cartData.addShoppingCartItem(

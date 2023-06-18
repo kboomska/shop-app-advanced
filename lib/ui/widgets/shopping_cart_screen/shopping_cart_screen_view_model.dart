@@ -16,10 +16,10 @@ class ShoppingCartScreenViewModel extends ChangeNotifier {
   late NumberFormat _formatter;
   String? _location;
 
-  ShoppingCartScreenViewModel(
-    this.cartData,
-    this.locationService,
-  ) {
+  ShoppingCartScreenViewModel({
+    required this.cartData,
+    required this.locationService,
+  }) {
     _setupData();
   }
 

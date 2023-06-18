@@ -78,6 +78,16 @@ class _DIContainer {
         categoryProvider: _makeCategoryService(),
         locationService: locationService,
       );
+  ProductScreenViewModel _makeProductScreenViewModel(Dish dish) =>
+      ProductScreenViewModel(
+        cartData: cartData,
+        dish: dish,
+      );
+  ShoppingCartScreenViewModel _makeShoppingCartScreenViewModel() =>
+      ShoppingCartScreenViewModel(
+        locationService: locationService,
+        cartData: cartData,
+      );
 }
 
 class _ScreenFactoryDefault implements ScreenFactory {
@@ -118,7 +128,7 @@ class _ScreenFactoryDefault implements ScreenFactory {
   @override
   Widget makeProductScreen(Dish dish) {
     return Provider(
-      create: (context) => ProductScreenViewModel(dish, diContainer.cartData),
+      create: (context) => diContainer._makeProductScreenViewModel(dish),
       child: const ProductScreenWidget(),
     );
   }
@@ -126,10 +136,7 @@ class _ScreenFactoryDefault implements ScreenFactory {
   @override
   Widget makeShoppingCartScreen() {
     return ChangeNotifierProvider(
-      create: (context) => ShoppingCartScreenViewModel(
-        diContainer.cartData,
-        diContainer.locationService,
-      ),
+      create: (context) => diContainer._makeShoppingCartScreenViewModel(),
       child: const ShoppingCartScreenWidget(),
     );
   }
