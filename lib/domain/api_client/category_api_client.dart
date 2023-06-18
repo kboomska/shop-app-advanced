@@ -2,9 +2,18 @@ import 'package:shop_app/domain/entity/categories_response.dart';
 import 'package:shop_app/domain/api_client/network_client.dart';
 import 'package:shop_app/configuration/configuration.dart';
 
-class CategoryApiClient {
-  final _networkClient = NetworkClient();
+abstract class CategoryApiClient {
+  Future<CategoriesResponse> getCategories();
+}
 
+class CategoryApiClientDefault implements CategoryApiClient {
+  final NetworkClient networkClient;
+
+  CategoryApiClientDefault({
+    required this.networkClient,
+  });
+
+  @override
   Future<CategoriesResponse> getCategories() async {
     CategoriesResponse parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
@@ -12,7 +21,7 @@ class CategoryApiClient {
       return jsonResponse;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       Configuration.host,
       '/058729bd-1402-4578-88de-265481fd7d54',
       parser,

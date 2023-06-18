@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
 import 'package:shop_app/domain/api_client/network_api_client_exception.dart';
 import 'package:shop_app/ui/navigation/main_navigation_route_names.dart';
+import 'package:shop_app/domain/entity/categories_response.dart';
 import 'package:shop_app/domain/services/date_time_service.dart';
-import 'package:shop_app/domain/services/category_service.dart';
 import 'package:shop_app/domain/services/location_service.dart';
 import 'package:shop_app/domain/entity/category.dart';
 
+abstract class MainScreenViewModelCategoryProvider {
+  Future<CategoriesResponse> mainScreenCategories();
+}
+
 class MainScreenViewModel extends ChangeNotifier {
-  final _categoryService = CategoryService();
+  final MainScreenViewModelCategoryProvider categoryProvider;
   LocationService locationService;
   final _categories = <Category>[];
   final _dateTimeService = DateTimeService();
@@ -18,7 +22,10 @@ class MainScreenViewModel extends ChangeNotifier {
   String _date = '';
   String? _location;
 
-  MainScreenViewModel(this.locationService);
+  MainScreenViewModel({
+    required this.categoryProvider,
+    required this.locationService,
+  });
 
   String get location => _location ?? 'Определение местоположения...';
   List<Category> get categories => List.unmodifiable(_categories);
@@ -47,7 +54,7 @@ class MainScreenViewModel extends ChangeNotifier {
 
   Future<String?> _fetchCategories() async {
     try {
-      final categoriesResponse = await _categoryService.mainScreenCategories();
+      final categoriesResponse = await categoryProvider.mainScreenCategories();
       _categories.addAll(categoriesResponse.categories);
       notifyListeners();
     } on NetworkApiClientException catch (e) {

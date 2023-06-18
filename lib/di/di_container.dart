@@ -12,8 +12,10 @@ import 'package:shop_app/ui/widgets/product_screen/product_screen_widget.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_view_model.dart';
 import 'package:shop_app/ui/widgets/main_screen/main_screen_widget.dart';
 import 'package:shop_app/ui/widgets/home_screen/home_screen_widget.dart';
+import 'package:shop_app/domain/api_client/category_api_client.dart';
 import 'package:shop_app/Library/HttpClient/app_http_client.dart';
 import 'package:shop_app/domain/api_client/dish_api_client.dart';
+import 'package:shop_app/domain/services/category_service.dart';
 import 'package:shop_app/domain/api_client/network_client.dart';
 import 'package:shop_app/domain/services/location_service.dart';
 import 'package:shop_app/ui/navigation/main_navigation.dart';
@@ -58,12 +60,23 @@ class _DIContainer {
         dishApiClient: _makeDishApiClient(),
       );
 
+  CategoryApiClient _makeCategoryApiClient() => CategoryApiClientDefault(
+        networkClient: _makeNetworkClient(),
+      );
+  CategoryService _makeCategoryService() => CategoryService(
+        categoryApiClient: _makeCategoryApiClient(),
+      );
+
   CategoryScreenViewModel _makeCategoryScreenViewModel(
           CategoryScreenConfiguration configuration) =>
       CategoryScreenViewModel(
         configuration: configuration,
         screenFactory: _makeScreenFactory(),
         dishProvider: _makeDishService(),
+      );
+  MainScreenViewModel _makeMainScreenViewModel() => MainScreenViewModel(
+        categoryProvider: _makeCategoryService(),
+        locationService: locationService,
       );
 }
 
@@ -87,7 +100,7 @@ class _ScreenFactoryDefault implements ScreenFactory {
   @override
   Widget makeMainScreen() {
     return ChangeNotifierProvider(
-      create: (context) => MainScreenViewModel(diContainer.locationService),
+      create: (context) => diContainer._makeMainScreenViewModel(),
       child: const MainScreenWidget(),
     );
   }
