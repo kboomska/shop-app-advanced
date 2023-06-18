@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_app/ui/widgets/category_screen/category_screen_widget.dart';
-import 'package:shop_app/domain/factories/screen_factory.dart';
-import 'package:shop_app/domain/services/dish_service.dart';
+import 'package:shop_app/ui/navigation/main_navigation.dart';
+import 'package:shop_app/domain/entity/dishes_response.dart';
 import 'package:shop_app/domain/entity/dish.dart';
 import 'package:shop_app/theme/app_colors.dart';
 
@@ -47,10 +47,14 @@ class DishTag {
   }
 }
 
+abstract class CategoryScreenViewModelDishProvider {
+  Future<DishesResponse> categoryScreenDishes();
+}
+
 class CategoryScreenViewModel extends ChangeNotifier {
+  final CategoryScreenViewModelDishProvider dishProvider;
   final CategoryScreenConfiguration configuration;
-  final _screenFactory = ScreenFactory();
-  final _dishService = DishService();
+  final ScreenFactory screenFactory;
   final _dishes = <Dish>[];
 
   final List<DishTag> _tags = <DishTag>[
@@ -60,7 +64,11 @@ class CategoryScreenViewModel extends ChangeNotifier {
     DishTag(name: 'С рыбой', isSelected: false),
   ];
 
-  CategoryScreenViewModel(this.configuration);
+  CategoryScreenViewModel({
+    required this.configuration,
+    required this.screenFactory,
+    required this.dishProvider,
+  });
 
   List<Dish> get dishes => List.unmodifiable(_dishes);
   List<DishTag> get tags => List.unmodifiable(_tags);
@@ -73,7 +81,7 @@ class CategoryScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> _loadDishes(String dishTag) async {
-    final dishesResponse = await _dishService.categoryScreenDishes();
+    final dishesResponse = await dishProvider.categoryScreenDishes();
     final filteredDishes = dishesResponse.dishes.where(
       (dish) => dish.tegs.contains(dishTag),
     );
@@ -94,7 +102,7 @@ class CategoryScreenViewModel extends ChangeNotifier {
     showDialog(
       context: context,
       builder: (context) {
-        return _screenFactory.makeProductScreen(_dishes[index]);
+        return screenFactory.makeProductScreen(_dishes[index]);
       },
     );
   }

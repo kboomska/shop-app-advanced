@@ -2,10 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shop_app/domain/api_client/network_api_client_exception.dart';
+import 'package:shop_app/Library/HttpClient/app_http_client.dart';
 
-class NetworkClient {
-  final _client = HttpClient();
+abstract class NetworkClient {
+  Future<T> get<T>(
+    String host,
+    String path,
+    T Function(dynamic json) parser,
+  );
+}
 
+class NetworkClientDefault implements NetworkClient {
+  final AppHttpClient httpClient;
+
+  NetworkClientDefault({
+    required this.httpClient,
+  });
+
+  @override
   Future<T> get<T>(
     String host,
     String path,
@@ -14,7 +28,7 @@ class NetworkClient {
     final url = Uri.parse('$host$path');
 
     try {
-      final request = await _client.getUrl(url);
+      final request = await httpClient.getUrl(url);
       final response = await request.close();
       final dynamic json = (await response.jsonDecode());
       final result = parser(json);
